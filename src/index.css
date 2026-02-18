@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 160 30% 6%;
+    --foreground: 40 20% 92%;
+
+    --card: 160 25% 10%;
+    --card-foreground: 40 20% 92%;
+
+    --popover: 160 25% 10%;
+    --popover-foreground: 40 20% 92%;
+
+    --primary: 160 70% 14%;
+    --primary-foreground: 40 30% 95%;
+
+    --secondary: 160 40% 18%;
+    --secondary-foreground: 40 20% 92%;
+
+    --muted: 160 20% 14%;
+    --muted-foreground: 160 10% 55%;
+
+    --accent: 43 45% 56%;
+    --accent-foreground: 160 70% 8%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 160 20% 18%;
+    --input: 160 20% 18%;
+    --ring: 43 45% 56%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 160 30% 8%;
+    --sidebar-foreground: 40 20% 92%;
+    --sidebar-primary: 160 70% 14%;
+    --sidebar-primary-foreground: 40 30% 95%;
+    --sidebar-accent: 160 20% 14%;
+    --sidebar-accent-foreground: 40 20% 92%;
+    --sidebar-border: 160 20% 18%;
+    --sidebar-ring: 43 45% 56%;
+
+    /* Custom tokens */
+    --gold: 43 45% 56%;
+    --gold-light: 43 50% 70%;
+    --gold-dark: 43 40% 40%;
+    --emerald: 160 70% 30%;
+    --emerald-light: 160 50% 45%;
+    --deep-green: 160 70% 8%;
+
+    --gradient-gold: linear-gradient(135deg, hsl(43 50% 65%), hsl(43 45% 50%));
+    --gradient-emerald: linear-gradient(135deg, hsl(160 70% 14%), hsl(160 50% 22%));
+    --gradient-hero: linear-gradient(180deg, hsla(160, 70%, 8%, 0.3) 0%, hsla(160, 70%, 8%, 0.85) 100%);
+
+    --shadow-gold: 0 4px 30px hsla(43, 45%, 56%, 0.15);
+    --shadow-card: 0 4px 20px hsla(0, 0%, 0%, 0.3);
+    --shadow-elevated: 0 8px 40px hsla(0, 0%, 0%, 0.4);
+
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Islamic geometric pattern overlay */
+.islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C5A55A' stroke-width='0.5' opacity='0.08'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Cpath d='M40 10L70 40L40 70L10 40Z'/%3E%3Cpath d='M40 20L60 40L40 60L20 40Z'/%3E%3Ccircle cx='40' cy='40' r='15'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Gold gradient text */
+.text-gradient-gold {
+  background: linear-gradient(135deg, hsl(43 50% 70%), hsl(43 45% 50%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gold border glow */
+.border-gold-glow {
+  border-color: hsl(43 45% 56%);
+  box-shadow: 0 0 15px hsla(43, 45%, 56%, 0.15);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(160 30% 6%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(160 20% 18%);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(43 45% 56%);
+}
