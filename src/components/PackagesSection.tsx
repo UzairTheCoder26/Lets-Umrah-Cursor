@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Plane, Star, MapPin, Utensils, Clock, MessageCircle } from "lucide-react";
+import { Plane, Star, MapPin, Utensils, Clock, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +9,6 @@ import packageMakkah from "@/assets/package-makkah.jpg";
 
 const PackagesSection = () => {
   const [packages, setPackages] = useState<any[]>([]);
-  const [whatsappNumber, setWhatsappNumber] = useState("917006016700");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,15 +16,8 @@ const PackagesSection = () => {
         .from("packages")
         .select("*")
         .eq("published", true)
-        .eq("featured", true)
-        .order("created_at", { ascending: false })
-        .limit(3);
+        .order("created_at", { ascending: false });
       setPackages(data || []);
-
-      const { data: phoneSetting } = await supabase.from("site_settings").select("value").eq("key", "header_phone").maybeSingle();
-      if (phoneSetting?.value) {
-        setWhatsappNumber(phoneSetting.value.replace(/[^0-9]/g, ""));
-      }
     };
     fetchData();
   }, []);
@@ -47,8 +39,7 @@ const PackagesSection = () => {
     );
   }
 
-  const getWhatsAppUrl = (title: string) =>
-    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Assalamualaikum,\n\nI am interested in the ${title}.\n\nPlease share complete details and availability.`)}`;
+  const getPackageUrl = (pkg: any) => (pkg.slug ? `/packages/${pkg.slug}` : `/packages/${pkg.id}`);
 
   return (
     <section className="py-20 px-4" id="packages">
@@ -88,13 +79,13 @@ const PackagesSection = () => {
                     <div>
                       {pkg.original_price && <span className="text-xs text-muted-foreground line-through">₹{Number(pkg.original_price).toLocaleString()}</span>}
                       <p className="text-2xl font-bold text-accent">₹{Number(pkg.price).toLocaleString()}</p>
-                      <span className="text-xs text-muted-foreground">per person</span>
+                      <span className="text-xs text-muted-foreground">starting price</span>
                     </div>
-                    <a href={getWhatsAppUrl(pkg.title)} target="_blank" rel="noopener noreferrer">
+                    <Link to={getPackageUrl(pkg)}>
                       <Button size="sm" className="bg-accent text-accent-foreground hover:bg-gold-light gap-1">
-                        <MessageCircle className="h-3.5 w-3.5" /> Book on WhatsApp
+                        <Eye className="h-3.5 w-3.5" /> View Details
                       </Button>
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </motion.div>

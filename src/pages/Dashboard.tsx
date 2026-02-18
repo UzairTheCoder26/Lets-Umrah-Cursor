@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Package, Calendar, CreditCard, Clock, CheckCircle } from "lucide-react";
+import { Package, Calendar, CreditCard, Clock, CheckCircle, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, loading: authLoading } = useAuth();
@@ -163,6 +164,14 @@ const Dashboard = () => {
                         </div>
                       </div>
                     )}
+
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <Link to={`/dashboard/booking/${booking.id}`}>
+                        <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground gap-2">
+                          <Eye className="h-4 w-4" /> View Details
+                        </Button>
+                      </Link>
+                    </div>
                   </motion.div>
                 );
               })}

@@ -9,6 +9,7 @@ import Packages from "./pages/Packages";
 import PackageDetail from "./pages/PackageDetail";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import CustomerBookingDetail from "./pages/CustomerBookingDetail";
 import DynamicPage from "./pages/DynamicPage";
 import FaqPage from "./pages/FaqPage";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/packages/:id" element={<PackageDetail />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/booking/:bookingId" element={<CustomerBookingDetail />} />
             <Route path="/page/:slug" element={<DynamicPage />} />
             <Route path="/about" element={<DynamicPage />} />
             <Route path="/contact" element={<DynamicPage />} />
