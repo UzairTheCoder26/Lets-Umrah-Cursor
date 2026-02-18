@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Plane, Star, MapPin, Utensils, Clock, Eye } from "lucide-react";
+import { Plane, Star, MapPin, Utensils, Clock, Eye, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,6 +40,15 @@ const PackagesSection = () => {
   }
 
   const getPackageUrl = (pkg: any) => (pkg.slug ? `/packages/${pkg.slug}` : `/packages/${pkg.id}`);
+  const stripHtml = (s: string) => (s || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  const overviewPreview = (s: string) => {
+    const t = stripHtml(s || "");
+    return t.length > 120 ? t.slice(0, 120) + "..." : t;
+  };
+  const getDepartureDates = (pkg: any) => {
+    const arr = Array.isArray(pkg?.departure_dates) ? pkg.departure_dates : [];
+    return arr.filter((d: any) => d?.tentative_date?.trim()).slice(0, 3);
+  };
 
   return (
     <section className="py-20 px-4" id="packages">
@@ -67,8 +76,22 @@ const PackagesSection = () => {
                   <h3 className="font-heading text-xl font-semibold text-foreground">{pkg.title}</h3>
                   <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {pkg.duration}</span>
-                    <span className="flex items-center gap-1"><Star className="h-3 w-3 text-accent" /> {pkg.rating}</span>
+                    {pkg.rating && <span className="flex items-center gap-1"><Star className="h-3 w-3 text-accent" /> {pkg.rating}</span>}
                   </div>
+                  {pkg.overview && (
+                    <p className="mt-2 text-xs text-muted-foreground line-clamp-2">{overviewPreview(pkg.overview)}</p>
+                  )}
+                  {getDepartureDates(pkg).length > 0 && (
+                    <div className="mt-3 rounded-lg border border-accent/20 bg-accent/5 p-3">
+                      <p className="text-xs font-medium text-accent flex items-center gap-1 mb-1.5"><Calendar className="h-3.5 w-3.5" /> Upcoming Departures</p>
+                      <ul className="text-xs text-muted-foreground space-y-0.5">
+                        {getDepartureDates(pkg).map((d: any, i: number) => (
+                          <li key={i}>• {d.tentative_date}</li>
+                        ))}
+                      </ul>
+                      <p className="text-[10px] text-muted-foreground mt-2">Final departure date will be confirmed upon booking via WhatsApp.</p>
+                    </div>
+                  )}
                   <div className="mt-4 flex flex-wrap gap-2">
                     {pkg.direct_flight && <span className="flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground"><Plane className="h-3 w-3" /> Direct</span>}
                     {pkg.five_star && <span className="flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground"><Star className="h-3 w-3" /> 5-Star</span>}

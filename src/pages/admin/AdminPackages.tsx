@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, X } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Calendar } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const AdminPackages = () => {
@@ -23,6 +23,8 @@ const AdminPackages = () => {
     featured: false, published: true, total_seats: 50,
     show_scarcity: true, cancellation_policy: "", refund_policy: "",
     itinerary: [], included: [], not_included: [],
+    overview: "", departure_note: "Final departure date will be discussed and confirmed on WhatsApp.",
+    departure_dates: [] as { tentative_date: string; note: string }[],
   };
 
   useEffect(() => { fetchPackages(); }, []);
@@ -34,6 +36,11 @@ const AdminPackages = () => {
 
   const handleSave = async () => {
     const { id, created_at, updated_at, seats_booked, rating, early_bird_price, early_bird_end_date, hotel_makkah_details, hotel_madinah_details, ...payload } = editing;
+    payload.departure_dates = (payload.departure_dates || []).filter((d: any) => d?.tentative_date?.trim()).map((d: any) => ({ tentative_date: d.tentative_date, note: d.note || "" }));
+    if (payload.departure_dates.length < 1) {
+      toast({ title: "Add at least one departure date", variant: "destructive" });
+      return;
+    }
 
     // Auto-generate slug
     if (!payload.slug) {
@@ -83,8 +90,8 @@ const AdminPackages = () => {
               <div className="space-y-4 mt-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label className="text-foreground">Title</Label>
-                    <Input value={editing.title} onChange={(e) => updateField("title", e.target.value)} className="bg-muted border-border text-foreground" />
+                    <Label className="text-foreground">Package Name</Label>
+                    <Input value={editing.title} onChange={(e) => updateField("title", e.target.value)} placeholder="e.g. Premium Umrah Experience" className="bg-muted border-border text-foreground" />
                   </div>
                   <div>
                     <Label className="text-foreground">Slug</Label>
@@ -92,19 +99,19 @@ const AdminPackages = () => {
                   </div>
                   <div>
                     <Label className="text-foreground">Duration</Label>
-                    <Input value={editing.duration} onChange={(e) => updateField("duration", e.target.value)} placeholder="e.g. 14 Days / 13 Nights" className="bg-muted border-border text-foreground" />
+                    <Input value={editing.duration} onChange={(e) => updateField("duration", e.target.value)} placeholder="e.g. 20 Days" className="bg-muted border-border text-foreground" />
                   </div>
                   <div>
-                    <Label className="text-foreground">Cover Image URL</Label>
-                    <Input value={editing.cover_image} onChange={(e) => updateField("cover_image", e.target.value)} className="bg-muted border-border text-foreground" />
-                  </div>
-                  <div>
-                    <Label className="text-foreground">Price (₹)</Label>
+                    <Label className="text-foreground">Starting Price (₹)</Label>
                     <Input type="number" value={editing.price} onChange={(e) => updateField("price", Number(e.target.value))} className="bg-muted border-border text-foreground" />
                   </div>
                   <div>
                     <Label className="text-foreground">Original Price (₹)</Label>
                     <Input type="number" value={editing.original_price} onChange={(e) => updateField("original_price", Number(e.target.value))} className="bg-muted border-border text-foreground" />
+                  </div>
+                  <div>
+                    <Label className="text-foreground">Cover Image URL</Label>
+                    <Input value={editing.cover_image} onChange={(e) => updateField("cover_image", e.target.value)} className="bg-muted border-border text-foreground" />
                   </div>
                   <div>
                     <Label className="text-foreground">Makkah Hotel</Label>
@@ -149,6 +156,60 @@ const AdminPackages = () => {
                   ))}
                 </div>
 
+                {/* Departure Dates */}
+                <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+                  <Label className="text-foreground flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-accent" />
+                    Departure Dates (minimum 1)
+                  </Label>
+                  <p className="text-xs text-muted-foreground">Add tentative dates. These are informational only, not clickable.</p>
+                  {(editing.departure_dates || []).length === 0 && (
+                    <Button type="button" variant="outline" size="sm" onClick={() => updateField("departure_dates", [{ tentative_date: "", note: "" }])} className="border-accent text-accent">
+                      <Plus className="h-3 w-3 mr-1" /> Add Departure Date
+                    </Button>
+                  )}
+                  {(editing.departure_dates || []).map((d: any, idx: number) => (
+                    <div key={idx} className="flex gap-2 items-start">
+                      <div className="flex-1 space-y-1">
+                        <Input value={d.tentative_date || ""} onChange={(e) => {
+                          const arr = [...(editing.departure_dates || [])];
+                          arr[idx] = { ...arr[idx], tentative_date: e.target.value };
+                          updateField("departure_dates", arr);
+                        }} placeholder="e.g. Around 10 March 2026" className="bg-muted border-border text-foreground" />
+                        <Input value={d.note || ""} onChange={(e) => {
+                          const arr = [...(editing.departure_dates || [])];
+                          arr[idx] = { ...arr[idx], note: e.target.value };
+                          updateField("departure_dates", arr);
+                        }} placeholder="Optional note (e.g. Subject to airline confirmation)" className="bg-muted border-border text-foreground text-sm" />
+                      </div>
+                      <Button type="button" variant="ghost" size="icon" onClick={() => {
+                        const arr = (editing.departure_dates || []).filter((_: any, i: number) => i !== idx);
+                        updateField("departure_dates", arr);
+                      }} className="text-destructive hover:text-destructive shrink-0">
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  {(editing.departure_dates || []).length > 0 && (
+                    <Button type="button" variant="outline" size="sm" onClick={() => updateField("departure_dates", [...(editing.departure_dates || []), { tentative_date: "", note: "" }])} className="border-accent text-accent">
+                      <Plus className="h-3 w-3 mr-1" /> Add Another
+                    </Button>
+                  )}
+                </div>
+
+                {/* Departure Note (editable) */}
+                <div>
+                  <Label className="text-foreground">Departure Confirmation Note</Label>
+                  <Textarea value={editing.departure_note || ""} onChange={(e) => updateField("departure_note", e.target.value)} placeholder="Final departure date will be discussed and confirmed on WhatsApp." className="bg-muted border-border text-foreground" rows={2} />
+                  <p className="text-xs text-muted-foreground mt-1">Shown on package detail page below departure dates.</p>
+                </div>
+
+                {/* Package Overview */}
+                <div>
+                  <Label className="text-foreground">Package Overview / Details</Label>
+                  <Textarea value={editing.overview || ""} onChange={(e) => updateField("overview", e.target.value)} placeholder="Describe spiritual experience, hotel comfort, location, group type, overall offering. Supports paragraphs and basic formatting." className="bg-muted border-border text-foreground min-h-[120px]" />
+                </div>
+
                 <div>
                   <Label className="text-foreground">Cancellation Policy</Label>
                   <Textarea value={editing.cancellation_policy || ""} onChange={(e) => updateField("cancellation_policy", e.target.value)} className="bg-muted border-border text-foreground" />
@@ -182,7 +243,7 @@ const AdminPackages = () => {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => { setEditing(pkg); setDialogOpen(true); }}
+                  onClick={() => { setEditing({ ...emptyPackage, ...pkg, departure_dates: pkg.departure_dates || [] }); setDialogOpen(true); }}
                   className="text-muted-foreground hover:text-accent"
                 >
                   <Pencil className="h-4 w-4" />

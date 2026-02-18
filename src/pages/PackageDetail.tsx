@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Plane, Star, MapPin, Utensils, Clock, CheckCircle, XCircle, Building } from "lucide-react";
+import { ArrowLeft, Plane, Star, MapPin, Utensils, Clock, CheckCircle, XCircle, Building, Calendar } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -107,6 +107,35 @@ const PackageDetail = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Departure Dates */}
+              {Array.isArray(pkg.departure_dates) && pkg.departure_dates.filter((d: any) => d?.tentative_date?.trim()).length > 0 && (
+                <div className="rounded-xl border border-accent/20 bg-accent/5 p-5">
+                  <h2 className="font-heading text-xl font-bold text-foreground mb-3 flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-accent" />
+                    Departure Dates
+                  </h2>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    {pkg.departure_dates.filter((d: any) => d?.tentative_date?.trim()).map((d: any, i: number) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-accent">•</span>
+                        <span>{d.tentative_date}{d.note ? ` — ${d.note}` : ""}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-4 text-sm font-medium text-accent bg-background/50 rounded-lg p-3">
+                    {pkg.departure_note || "Final departure date will be discussed and confirmed on WhatsApp."}
+                  </p>
+                </div>
+              )}
+
+              {/* Package Overview */}
+              {pkg.overview && (
+                <div className="rounded-xl border border-border bg-card p-5">
+                  <h2 className="font-heading text-xl font-bold text-foreground mb-4">Package Overview</h2>
+                  <div className="prose prose-invert prose-sm max-w-none text-muted-foreground whitespace-pre-wrap">{pkg.overview}</div>
+                </div>
+              )}
 
               {/* Hotels */}
               <div className="grid gap-4 sm:grid-cols-2">

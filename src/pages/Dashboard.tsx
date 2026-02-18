@@ -107,8 +107,10 @@ const Dashboard = () => {
                       <div className="flex items-center gap-2 text-sm">
                         <Calendar className="h-4 w-4 text-accent" />
                         <div>
-                          <p className="text-muted-foreground text-xs">Departure</p>
-                          <p className="text-foreground font-medium">{booking.departure_date || "TBD"}</p>
+                          <p className="text-muted-foreground text-xs">Confirmed Departure</p>
+                          <p className="text-foreground font-medium">
+                            {booking.departure_date ? new Date(booking.departure_date + "T12:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "TBD"}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 text-sm">

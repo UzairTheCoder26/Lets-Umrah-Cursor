@@ -215,6 +215,8 @@ export type Database = {
           cancellation_policy: string | null
           cover_image: string | null
           created_at: string
+          departure_dates: Json | null
+          departure_note: string | null
           direct_flight: boolean | null
           distance_madinah: string | null
           distance_makkah: string | null
@@ -242,6 +244,7 @@ export type Database = {
           slug: string
           title: string
           total_seats: number | null
+          overview: string | null
           updated_at: string
           visa_included: boolean | null
         }
@@ -249,6 +252,8 @@ export type Database = {
           cancellation_policy?: string | null
           cover_image?: string | null
           created_at?: string
+          departure_dates?: Json | null
+          departure_note?: string | null
           direct_flight?: boolean | null
           distance_madinah?: string | null
           distance_makkah?: string | null
@@ -276,6 +281,7 @@ export type Database = {
           slug: string
           title: string
           total_seats?: number | null
+          overview?: string | null
           updated_at?: string
           visa_included?: boolean | null
         }
@@ -283,6 +289,8 @@ export type Database = {
           cancellation_policy?: string | null
           cover_image?: string | null
           created_at?: string
+          departure_dates?: Json | null
+          departure_note?: string | null
           direct_flight?: boolean | null
           distance_madinah?: string | null
           distance_makkah?: string | null
@@ -310,6 +318,7 @@ export type Database = {
           slug?: string
           title?: string
           total_seats?: number | null
+          overview?: string | null
           updated_at?: string
           visa_included?: boolean | null
         }

@@ -202,8 +202,9 @@ const AdminBookings = () => {
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label className="text-foreground">Departure Date</Label>
+                    <Label className="text-foreground">Confirmed Departure Date</Label>
                     <Input type="date" value={editing.departure_date || ""} onChange={(e) => updateField("departure_date", e.target.value)} className="bg-muted border-border text-foreground" />
+                    <p className="text-xs text-muted-foreground mt-1">This overrides tentative dates for this customer. Required when assigning a booking.</p>
                   </div>
                   <div>
                     <Label className="text-foreground">Total Price (₹)</Label>

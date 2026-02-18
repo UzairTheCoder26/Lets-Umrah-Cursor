@@ -138,6 +138,14 @@ const CustomerBookingDetail = () => {
                 ))}
               </div>
 
+              {/* Package Overview */}
+              {pkg.overview && (
+                <div className="rounded-xl border border-border bg-card p-5">
+                  <h2 className="font-heading text-xl font-bold text-foreground mb-4">Package Overview</h2>
+                  <div className="prose prose-invert prose-sm max-w-none text-muted-foreground whitespace-pre-wrap">{pkg.overview}</div>
+                </div>
+              )}
+
               {/* Payment Info */}
               <div className="rounded-xl border border-border bg-card p-5">
                 <h2 className="font-heading text-2xl font-bold text-foreground mb-4">Your Booking & Payment</h2>
@@ -145,8 +153,10 @@ const CustomerBookingDetail = () => {
                   <div className="flex items-center gap-2 text-sm">
                     <Calendar className="h-4 w-4 text-accent" />
                     <div>
-                      <p className="text-muted-foreground text-xs">Departure Date</p>
-                      <p className="text-foreground font-medium">{booking.departure_date || "TBD"}</p>
+                      <p className="text-muted-foreground text-xs">Confirmed Departure</p>
+                      <p className="text-foreground font-medium">
+                        {booking.departure_date ? new Date(booking.departure_date + "T12:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "TBD"}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
@@ -291,7 +301,7 @@ const CustomerBookingDetail = () => {
                   <span className="text-xs text-muted-foreground">total booking amount</span>
                 </div>
                 <div className="space-y-3">
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Departure</span><span className="text-foreground font-medium">{booking.departure_date || "TBD"}</span></div>
+                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Confirmed Departure</span><span className="text-foreground font-medium">{booking.departure_date ? new Date(booking.departure_date + "T12:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "TBD"}</span></div>
                   <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground font-medium capitalize">{booking.booking_status}</span></div>
                   <div className="flex justify-between text-sm"><span className="text-muted-foreground">Payment</span><span className="text-foreground font-medium">{pct}% paid</span></div>
                 </div>
