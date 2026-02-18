@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Plane, Star, MapPin, Utensils, Clock, CheckCircle, XCircle, Building, Calendar, CreditCard } from "lucide-react";
@@ -83,6 +84,7 @@ const CustomerBookingDetail = () => {
     );
   }
 
+  useDocumentTitle(pkg?.title ? `Booking: ${pkg.title}` : undefined);
   const itinerary = Array.isArray(pkg.itinerary) ? pkg.itinerary : [];
   const included = Array.isArray(pkg.included) ? pkg.included : [];
   const notIncluded = Array.isArray(pkg.not_included) ? pkg.not_included : [];

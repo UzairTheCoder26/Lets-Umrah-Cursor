@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Plane, Star, MapPin, Utensils, Clock, CheckCircle, XCircle, Building } from "lucide-react";
@@ -64,6 +65,7 @@ const PackageDetail = () => {
     );
   }
 
+  useDocumentTitle(pkg.title);
   const seatsLeft = (pkg.total_seats || 50) - (pkg.seats_booked || 0);
   const itinerary = Array.isArray(pkg.itinerary) ? pkg.itinerary : [];
   const included = Array.isArray(pkg.included) ? pkg.included : [];
