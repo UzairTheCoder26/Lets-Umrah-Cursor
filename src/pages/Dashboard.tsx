@@ -166,11 +166,11 @@ const Dashboard = () => {
                     )}
 
                     <div className="mt-4 pt-4 border-t border-border">
-                      <Link to={`/dashboard/booking/${booking.id}`}>
-                        <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground gap-2">
+                      <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground gap-2">
+                        <Link to={`/dashboard/booking/${booking.id}`}>
                           <Eye className="h-4 w-4" /> View Details
-                        </Button>
-                      </Link>
+                        </Link>
+                      </Button>
                     </div>
                   </motion.div>
                 );

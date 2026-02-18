@@ -15,6 +15,7 @@ import packageMakkah from "@/assets/package-makkah.jpg";
 const PackageDetail = () => {
   const { id } = useParams();
   const [pkg, setPkg] = useState<any>(null);
+  useDocumentTitle(pkg?.title);
   const [faqs, setFaqs] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,6 @@ const PackageDetail = () => {
     );
   }
 
-  useDocumentTitle(pkg.title);
   const seatsLeft = (pkg.total_seats || 50) - (pkg.seats_booked || 0);
   const itinerary = Array.isArray(pkg.itinerary) ? pkg.itinerary : [];
   const included = Array.isArray(pkg.included) ? pkg.included : [];

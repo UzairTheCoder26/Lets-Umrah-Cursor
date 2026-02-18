@@ -17,6 +17,7 @@ const CustomerBookingDetail = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState<any>(null);
   const [pkg, setPkg] = useState<any>(null);
+  useDocumentTitle(pkg ? `Booking: ${pkg.title}` : undefined);
   const [faqs, setFaqs] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,7 +85,6 @@ const CustomerBookingDetail = () => {
     );
   }
 
-  useDocumentTitle(pkg?.title ? `Booking: ${pkg.title}` : undefined);
   const itinerary = Array.isArray(pkg.itinerary) ? pkg.itinerary : [];
   const included = Array.isArray(pkg.included) ? pkg.included : [];
   const notIncluded = Array.isArray(pkg.not_included) ? pkg.not_included : [];

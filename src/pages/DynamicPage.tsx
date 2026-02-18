@@ -20,6 +20,7 @@ const DynamicPage = () => {
   const location = useLocation();
   const slug = paramSlug || routeToSlug[location.pathname] || "";
   const [page, setPage] = useState<any>(null);
+  useDocumentTitle(page?.title);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,8 +32,6 @@ const DynamicPage = () => {
     };
     fetch();
   }, [slug]);
-
-  useDocumentTitle(page?.title);
 
   if (loading) return <div className="min-h-screen bg-background flex items-center justify-center text-accent">Loading...</div>;
   if (!page) return <div className="min-h-screen bg-background"><Header /><main className="pt-32 text-center"><h1 className="font-heading text-3xl text-foreground">Page Not Found</h1></main><Footer /></div>;

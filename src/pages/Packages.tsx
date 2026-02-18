@@ -112,11 +112,11 @@ const Packages = () => {
                           <p className="text-2xl font-bold text-accent">₹{Number(pkg.price).toLocaleString()}</p>
                           <span className="text-xs text-muted-foreground">starting price</span>
                         </div>
-                        <Link to={getPackageUrl(pkg)}>
-                          <Button size="sm" className="bg-accent text-accent-foreground hover:bg-gold-light gap-1">
+                        <Button asChild size="sm" className="bg-accent text-accent-foreground hover:bg-gold-light gap-1">
+                          <Link to={getPackageUrl(pkg)}>
                             <Eye className="h-3.5 w-3.5" /> View Details
-                          </Button>
-                        </Link>
+                          </Link>
+                        </Button>
                       </div>
                     </div>
                   </motion.div>
