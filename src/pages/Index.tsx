@@ -14,11 +14,11 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
+        <IslamicQuotes />
         <PackagesSection />
         <WhyChooseUs />
         <JourneySteps />
         <TestimonialsSection />
-        <IslamicQuotes />
         <FaqSection />
       </main>
       <Footer />

@@ -23,7 +23,7 @@ const IslamicQuotes = () => {
   }, [quotes.length]);
 
   return (
-    <section className="py-16 px-4 bg-primary/50 islamic-pattern">
+    <section className="py-16 px-4">
       <div className="container mx-auto max-w-2xl text-center">
         <div className="min-h-[100px] flex items-center justify-center">
           <AnimatePresence mode="wait">
