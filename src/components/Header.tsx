@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -14,22 +15,41 @@ const navLinks = [
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
 
+  useEffect(() => {
+    const fetchLogo = async () => {
+      const { data } = await supabase
+        .from("site_settings")
+        .select("value")
+        .eq("key", "logo_url")
+        .maybeSingle();
+
+      const value = data?.value || "https://i.postimg.cc/sx9tHXwG/LOGO.png";
+      setLogoUrl(value);
+    };
+
+    fetchLogo();
+  }, []);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/90 backdrop-blur-md">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
-            <span className="font-heading text-lg font-bold text-accent-foreground">LU</span>
-          </div>
-          <div>
-            <h1 className="font-heading text-xl font-bold leading-none text-foreground">
-              Let's <span className="text-accent">Umrah</span>
-            </h1>
-          </div>
+        <Link to="/" className="flex items-center">
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt="Let's Umrah logo"
+              className="h-12 w-auto object-contain"
+            />
+          ) : (
+            <div className="flex h-12 w-12 items-center justify-center">
+              <span className="font-heading text-lg font-bold text-accent">LU</span>
+            </div>
+          )}
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">

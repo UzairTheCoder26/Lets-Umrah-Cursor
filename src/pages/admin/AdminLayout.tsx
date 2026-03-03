@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, Link, Outlet, useLocation } from "react-router-dom";
 import { Package, Users, FileText, MessageSquare, Settings, BarChart3, BookOpen, Image, Quote, LogOut, Home, CreditCard } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const adminNavItems = [
   { label: "Dashboard", path: "/admin", icon: BarChart3 },
@@ -21,6 +22,22 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      const { data } = await supabase
+        .from("site_settings")
+        .select("value")
+        .eq("key", "logo_url")
+        .maybeSingle();
+
+      const value = data?.value || "https://i.postimg.cc/sx9tHXwG/LOGO.png";
+      setLogoUrl(value);
+    };
+
+    fetchLogo();
+  }, []);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
@@ -40,8 +57,16 @@ const AdminLayout = () => {
       <aside className={`${sidebarOpen ? 'w-60' : 'w-16'} border-r border-border bg-card flex flex-col transition-all duration-200 shrink-0`}>
         <div className="p-4 border-b border-border">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent shrink-0">
-              <span className="font-heading text-sm font-bold text-accent-foreground">LU</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent shrink-0 overflow-hidden">
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt="Let's Umrah logo"
+                  className="h-8 w-8 object-contain"
+                />
+              ) : (
+                <span className="font-heading text-sm font-bold text-accent-foreground">LU</span>
+              )}
             </div>
             {sidebarOpen && <span className="font-heading text-sm font-bold text-foreground">Admin Panel</span>}
           </Link>

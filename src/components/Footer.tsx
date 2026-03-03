@@ -5,13 +5,14 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Footer = () => {
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSettings = async () => {
       const { data } = await supabase
         .from("site_settings")
         .select("key, value")
-        .in("key", ["phone_number"]);
+        .in("key", ["phone_number", "logo_url"]);
 
       const map: Record<string, string> = {};
       (data || []).forEach((s: any) => {
@@ -23,6 +24,10 @@ const Footer = () => {
       if (map.phone_number) {
         setPhoneNumber(map.phone_number);
       }
+
+      const logo =
+        map.logo_url || "https://i.postimg.cc/sx9tHXwG/LOGO.png";
+      setLogoUrl(logo);
     };
 
     fetchSettings();
@@ -38,12 +43,13 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
-                <span className="font-heading text-lg font-bold text-accent-foreground">LU</span>
-              </div>
-              <h3 className="font-heading text-xl font-bold text-foreground">
-                Let's <span className="text-accent">Umrah</span>
-              </h3>
+              {logoUrl && (
+                <img
+                  src={logoUrl}
+                  alt="Let's Umrah logo"
+                  className="h-10 w-auto object-contain"
+                />
+              )}
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Your trusted partner for a blessed and seamless Umrah experience. We ensure every step of your spiritual journey is taken care of.
