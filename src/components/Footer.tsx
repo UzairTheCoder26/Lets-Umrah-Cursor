@@ -1,7 +1,36 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Footer = () => {
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const { data } = await supabase
+        .from("site_settings")
+        .select("key, value")
+        .in("key", ["phone_number"]);
+
+      const map: Record<string, string> = {};
+      (data || []).forEach((s: any) => {
+        if (s.value) {
+          map[s.key] = s.value as string;
+        }
+      });
+
+      if (map.phone_number) {
+        setPhoneNumber(map.phone_number);
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  const displayPhone = phoneNumber || "+91 7006016700";
+  const telHref = `tel:${displayPhone.replace(/[^0-9+]/g, "")}`;
+
   return (
     <footer className="islamic-pattern border-t border-border bg-primary">
       <div className="container mx-auto px-4 py-12">
@@ -64,13 +93,17 @@ const Footer = () => {
           <div>
             <h4 className="font-heading text-lg font-semibold text-foreground mb-4">Contact Us</h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4 text-accent" />
-                <a href="tel:+917006016700" className="hover:text-accent">+91 7006016700</a>
-              </li>
+              {displayPhone && (
+                <li className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Phone className="h-4 w-4 text-accent" />
+                  <a href={telHref} className="hover:text-accent">
+                    {displayPhone}
+                  </a>
+                </li>
+              )}
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 text-accent" />
-                <a href="mailto:info@letsumrah.com" className="hover:text-accent">info@letsumrah.com</a>
+                <a href="mailto:hafizuxair26@gmail.com" className="hover:text-accent">hafizuxair26@gmail.com</a>
               </li>
               <li className="flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4 mt-0.5 text-accent" />

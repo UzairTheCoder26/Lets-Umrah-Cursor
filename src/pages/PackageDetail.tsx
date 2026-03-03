@@ -39,8 +39,13 @@ const PackageDetail = () => {
         setTestimonials((pkgTestimonials?.length ?? 0) > 0 ? (pkgTestimonials || []) : (generalTestimonials || []));
       }
 
-      // Fetch WhatsApp number from settings
-      const { data: phoneSetting } = await supabase.from("site_settings").select("value").eq("key", "header_phone").maybeSingle();
+      // Fetch WhatsApp number from settings (linked to admin phone number)
+      const { data: phoneSetting } = await supabase
+        .from("site_settings")
+        .select("value")
+        .eq("key", "phone_number")
+        .maybeSingle();
+
       if (phoneSetting?.value) {
         setWhatsappNumber(phoneSetting.value.replace(/[^0-9]/g, ""));
       }

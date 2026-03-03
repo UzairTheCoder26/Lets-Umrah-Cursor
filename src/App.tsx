@@ -13,6 +13,8 @@ import Dashboard from "./pages/Dashboard";
 import CustomerBookingDetail from "./pages/CustomerBookingDetail";
 import DynamicPage from "./pages/DynamicPage";
 import FaqPage from "./pages/FaqPage";
+import BlogList from "./pages/BlogList";
+import BlogPost from "./pages/BlogPost";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPackages from "./pages/admin/AdminPackages";
@@ -56,6 +58,8 @@ const App = () => (
             <Route path="/refund-policy" element={<DynamicPage />} />
             <Route path="/cancellation-policy" element={<DynamicPage />} />
             <Route path="/faq" element={<FaqPage />} />
+            <Route path="/blog" element={<BlogList />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
 
             {/* Admin routes */}
             <Route path="/admin" element={<AdminLayout />}>
